@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: |
-  
+  This CloudFormation Template was written for running Kittens Carousel Static Website on EC2.
 Parameters:
  keypair:
    Description: choose your keypair
@@ -27,7 +27,7 @@ mysecgroup:
       IpProtocol: tcp
       ToPort: 80
 
-  mywebserver:
+mywebserver:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: !Ref image
@@ -41,8 +41,23 @@ mysecgroup:
         - Key: Name
           Value: !Sub Web server of ${AWS::StackName}
      
-      UserData: 
-  
+      UserData: !Base64 |
+       #! /bin/bash
+       dnf update -y
+       dnf install httpd -y
+       FOLDER =  'https://raw.githubusercontent.com/nazlinurkaya/aws-project-20/refs/heads/main/101-kittens-carousel-static-website-ec2/static-web'
+       cd /var/wwww/html
+       wget ${FOLDER}/index.html
+       wget ${FOLDER}/cat0.jpg
+       wget ${FOLDER}/cat1.jpg
+       wget ${FOLDER}/cat2.jpg
+       systemctl start httpd 
+       systemctl enable httpd 
 
   
 Outputs:
+ WebSiteURL:
+  Description: URL of  WebSiteURL
+  Value: !Sub
+    http://${PublicDNS}
+    PublicDNS: !GetAtt mywebserver.PublicDnsName
