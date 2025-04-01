@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: |
+  
+Parameters:
+ keypair:
+   Description: choose your keypair
+   Type: AWS::EC2::KeyPair::KeyName
+   Default: first-key
+   Resources:
+image:
+    Description: choose your imageid
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-arm64
+mysecgroup:
+  Type: AWS::EC2::SecurityGroup
+  Properties:
+    GroupDescription: Allow ssh and http
+    GroupName: nazli-sec-grp-20
+    SecurityGroupIngress: 
+    - CidrIp: 0.0.0.0/0
+      FromPort: 22
+      IpProtocol: tcp
+      ToPort: 22
+
+    - CidrIp: 0.0.0.0/0
+      FromPort: 80
+      IpProtocol: tcp
+      ToPort: 80
+
+  mywebserver:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref image
+      InstanceType: t2.micro
+      KeyName: !Ref keypair
+      SecurityGroupIds: 
+        - !Ref mysecgroup
+  
+     
+      Tags: 
+        - Key: Name
+          Value: !Sub Web server of ${AWS::StackName}
+     
+      UserData: 
+  
+
+  
+Outputs:
