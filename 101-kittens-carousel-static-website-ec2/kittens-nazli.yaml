@@ -10,7 +10,7 @@ Parameters:
     Description: Choose your keypair
     Type: AWS::EC2::KeyPair::KeyName
     Default: first-key
-    
+
 Resources: 
   mySecGrp:
     Type: AWS::EC2::SecurityGroup
@@ -42,7 +42,7 @@ Resources:
         #!/bin/bash
         dnf update -y
         dnf install httpd -y
-        FOLDER = "https://raw.githubusercontent.com/nazlinurkaya/aws-project-20/refs/heads/main/101-kittens-carousel-static-website-ec2/static-web
+        FOLDER="https://raw.githubusercontent.com/nazlinurkaya/aws-project-20/refs/heads/main/101-kittens-carousel-static-website-ec2/static-web"
         cd /var/www/html/
         wget ${FOLDER}/index.html
         wget ${FOLDER}/cat0.jpg
@@ -56,7 +56,6 @@ Outputs:
     Value: !Sub
       - http://${PublicDNS}
       - PublicDNS: !GetAtt mywebserver.PublicDnsName
-
 
 
 
