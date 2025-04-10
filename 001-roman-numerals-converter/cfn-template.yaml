@@ -47,17 +47,15 @@ Resources:
         pip3 install flask
         dnf install git -y
         mkdir -p templates
-        wget -o templates ${FOLDER}/index.html https://raw.githubusercontent.com/nazlinurkaya/aws-project-20/refs/heads/main/001-roman-numerals-converter/templates/index.html
-        wget -o templates ${FOLDER}/result.html https://raw.githubusercontent.com/nazlinurkaya/aws-project-20/refs/heads/main/001-roman-numerals-converter/templates/result.html
-        wget -o roman-numerals-converter-app.py https://raw.githubusercontent.com/nazlinurkaya/aws-project-20/refs/heads/main/001-roman-numerals-converter/roman-numerals-converter-app.py
+        wget -O templates/index.html https://raw.githubusercontent.com/nazlinurkaya/aws-project-20/refs/heads/main/001-roman-numerals-converter/templates/index.html
+        wget -O templates/result.html https://raw.githubusercontent.com/nazlinurkaya/aws-project-20/refs/heads/main/001-roman-numerals-converter/templates/result.html
+        wget -O roman-numerals-converter-app.py https://raw.githubusercontent.com/nazlinurkaya/aws-project-20/refs/heads/main/001-roman-numerals-converter/roman-numerals-converter-app.py
         python3 roman-numerals-converter-app.py &
 
-Outputs: 
-  WebsiteURL:
-    Value: !Sub 
-      - http://${UrlName}
-      - UrlName: !GetAtt ConverterHost.PublicDnsName
-    Description: Roman Numerals Converter Application URL
+Outputs:
+  WebSiteURL:
+    Value: !Sub http://${ConverterHost.PublicDnsName}
+    Description: URL for the Roman Numerals Converter Web Application
 
 
 
