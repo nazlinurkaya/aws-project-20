@@ -28,7 +28,7 @@ aws ec2 create-security-group \
 
 - We can check the security Group with these commands
 ```bash
-aws ec2 describe-security-groups --group-names oktaws20_roman_numbers_converter_sec_grp
+aws ec2 describe-security-groups --group-names aws20_roman_numbers_converter_sec_grp
 ```
 
 2. Create Rules of security Group
@@ -53,6 +53,8 @@ aws ec2 authorize-security-group-ingress \
 ```bash
 
 aws ssm get-parameters --names /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2 --region us-east-1
+aws ssm get-parameters --names /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2 --region us-east-1
+
 ```
 
 - This command is to run querry to get latest AMI ID (Linux 2)
@@ -76,23 +78,23 @@ yum update -y
 yum install python3
 pip3 install flask
 cd /home/ec2-user
-FOLDER="https://github.com/xxxxx/xxxxx/tree/main/001-roman-numerals-converter"
-wget ${FOLDER}/roman-numerals-converter-app.py
+wget https://raw.githubusercontent.com/nazlinurkaya/aws-project-20/refs/heads/main/001-roman-numerals-converter/roman-numerals-converter-app.py
+
 mkdir templates && cd templates
-wget ${FOLDER}/templates/index.html
-wget ${FOLDER}/templates/result.html
+wget https://raw.githubusercontent.com/nazlinurkaya/aws-project-20/refs/heads/main/001-roman-numerals-converter/templates/index.html
+wget https://raw.githubusercontent.com/nazlinurkaya/aws-project-20/refs/heads/main/001-roman-numerals-converter/templates/result.html
 cd ..
 python3 roman-numerals-converter-app.py
 ```
 ```bash
-aws ec2 run-instances --image-id $LATEST_AMI --count 1 --instance-type t2.micro --key-name xxxx --security-groups aws20_roman_numbers_converter_sec_grp --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=roman_numbers}]' --user-data file:///home/ec2-user/userdata.sh
+aws ec2 run-instances --image-id $LATEST_AMI --count 1 --instance-type t2.micro --key-name second-key-pair --security-groups aws20_roman_numbers_converter_sec_grp --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=roman_numbers}]' --user-data file:///home/ec2-user/userdata.sh
 or
 
 aws ec2 run-instances \
     --image-id $LATEST_AMI \
     --count 1 \
     --instance-type t2.micro \
-    --key-name xxxx \
+    --key-name second-key-pair \
     --security-groups okde07_roman_numbers_converter_sec_grp \
     --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=roman_numbers}]' \
     --user-data file:///home/ec2-user/userdata.sh
